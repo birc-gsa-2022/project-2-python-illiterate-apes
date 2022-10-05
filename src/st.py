@@ -11,6 +11,9 @@ class Node:
 
     def __str__(self):
         return f"{self.start},{self.end},{type(self.child)}, {type(self.sib)}"
+    
+    def __len__(self):
+        return self.end-self.start
 
 SENTINEL = "$"
 
@@ -41,16 +44,19 @@ def getDifference(str1, str2, i, j, length):
 
 def getSuffixTree(x: str):
     suffixes = getAllSuffixes(x)
+    x += SENTINEL
 
     painList = []
 
-    root = Node(0, len(x), None, None)
+    firstLeave = Node(0, len(x), None, None)
+    root = Node(0, 0, firstLeave, None)
     painList.append(root)
-    x += SENTINEL
+    painList.append(firstLeave)
 
     for index, suf in enumerate(suffixes):        
-        n = root
         i = 0
+        n = root
+        
         while type(n) is Node:
             dif, match = getMatch(x, suf, n, i)
             if dif < 0:
