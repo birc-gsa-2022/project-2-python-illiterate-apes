@@ -51,8 +51,6 @@ def getSuffixTree(x: str):
     # Create the root and the first leaf
     firstLeaf = Node(0, len(x), 1, None)
     root = Node(0, 0, firstLeaf, None)
-    painList.append(root)
-    painList.append(firstLeaf)
 
     for index, suf in enumerate(suffixes):
         print(suf)
@@ -66,7 +64,6 @@ def getSuffixTree(x: str):
                 # Finishes at the node
                 newNode = Node(index+i, len(x), index+1, n.child)
                 n.child = newNode
-                painList.append(newNode)
                 break
             elif dif<len(match):
                 # Finishes at the edge
@@ -88,8 +85,6 @@ def getSuffixTree(x: str):
                 
                     prevSib.sib = middleNode
 
-                painList.append(newNode)
-                painList.append(middleNode)
                 break
             else:
                 # We are still matching, search in match
