@@ -48,13 +48,15 @@ def getSuffixTree(x: str):
 
     painList = []
 
-    # Create the root and the first leave
-    firstLeaf = Node(0, len(x), None, None)
+    # Create the root and the first leaf
+    firstLeaf = Node(0, len(x), 1, None)
     root = Node(0, 0, firstLeaf, None)
     painList.append(root)
     painList.append(firstLeaf)
 
-    for index, suf in enumerate(suffixes):        
+    for index, suf in enumerate(suffixes):
+        print(suf)
+        index += 1     
         i = 0
         n = root
         
@@ -62,18 +64,30 @@ def getSuffixTree(x: str):
             dif, match = getMatch(x, suf, n, i)
             if dif < 0:
                 # Finishes at the node
-                newNode = Node(index+i, len(x), index, n.child)
+                newNode = Node(index+i, len(x), index+1, n.child)
                 n.child = newNode
                 painList.append(newNode)
                 break
-            elif dif<match.end-match.start:
+            elif dif<len(match):
                 # Finishes at the edge
-                newNode = Node(index+i+dif, len(x), index, n.child)
-                middleNode = Node(match.start, match.start+dif, newNode, match.sib)
-                n.child = middleNode
+                middleNode = Node(match.start, match.start+dif, None, match.sib)
+                newNode = Node(index+i+dif, len(x), index+1, match)
+
+                middleNode.child = newNode
+
+                match.start += dif
+                match.sib = None
+
+                # Look for the sibling that points to the match node
+                prevSib = n.child
+                if prevSib == match:
+                    n.child = middleNode
+                else:
+                    while prevSib.sib != match:
+                        prevSib = prevSib.sib
                 
-                match.start += dif+1
-                match.sib = newNode
+                    prevSib.sib = middleNode
+
                 painList.append(newNode)
                 painList.append(middleNode)
                 break
@@ -82,19 +96,27 @@ def getSuffixTree(x: str):
                 i += match.end-match.start
                 n = match
         
-    for p in painList:
-        print(p)
-    return root
+    preorder(x, root)
 
-def preorder(x, n: Node):
+def preorder_r(x: str, n: Node, depth: int):
     if type(n) is Node:
-        print("Begin",x[n.start: n.end])
-        print(x[n.start: n.end])
+        print("\t"*depth, end="")
+        if len(n) > 0:
+            print(x[n.start: n.end], end="")
+        else:
+            print(end="-")
         child = n.child
-        while type(child) is Node:
-            preorder(x, child)
-            child = child.sib
-        print("End",x[n.start: n.end])
+        if type(child) is int:
+            print("",child)
+        else:
+            print()
+            while type(child) is Node:
+                preorder_r(x, child, depth+1)
+                child = child.sib
+
+def preorder(x: str, n: Node):
+    print("Tree representation:")
+    preorder_r(x, n, 0)
 
 def main():
     # argparser = argparse.ArgumentParser(
@@ -105,7 +127,7 @@ def main():
     # print(f"Find every reads in {args.reads.name} " +
     #       f"in genome {args.genome.name}")
     
-    tree = getSuffixTree("banana")
+    tree = getSuffixTree("mississippi")
     #preorder("banana$", tree)
 
 
