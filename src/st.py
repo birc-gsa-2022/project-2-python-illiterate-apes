@@ -48,10 +48,11 @@ def getSuffixTree(x: str):
 
     painList = []
 
-    firstLeave = Node(0, len(x), None, None)
-    root = Node(0, 0, firstLeave, None)
+    # Create the root and the first leave
+    firstLeaf = Node(0, len(x), None, None)
+    root = Node(0, 0, firstLeaf, None)
     painList.append(root)
-    painList.append(firstLeave)
+    painList.append(firstLeaf)
 
     for index, suf in enumerate(suffixes):        
         i = 0
@@ -94,9 +95,6 @@ def preorder(x, n: Node):
             preorder(x, child)
             child = child.sib
         print("End",x[n.start: n.end])
-
-        
-
 
 def main():
     # argparser = argparse.ArgumentParser(
