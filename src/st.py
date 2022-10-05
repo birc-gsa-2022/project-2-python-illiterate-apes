@@ -53,7 +53,9 @@ def getSuffixTree(x: str):
             if match:
                 dif = getDifference(suf, x, i, match.start, match.end-match.start)
                 if dif<0:
+                    i += match.end-match.start
                     n = match
+                    continue
                 else:
                     newNode = Node(index+i+dif, len(x), index, n.child)
                     middleNode = Node(match.start, match.start+dif, newNode, match.sib)
