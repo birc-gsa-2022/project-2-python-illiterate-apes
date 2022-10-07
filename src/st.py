@@ -1,6 +1,7 @@
 from __future__ import annotations
 import argparse
 from dataclasses import dataclass
+import search
 
 @dataclass
 class Node:
@@ -90,8 +91,9 @@ def getSuffixTree(x: str):
                 # We are still matching, search in match
                 i += match.end-match.start
                 n = match
-        
+    
     preorder(x, root)
+    return root
 
 def preorder_r(x: str, n: Node, depth: int):
     if type(n) is Node:
@@ -122,7 +124,10 @@ def main():
     # print(f"Find every reads in {args.reads.name} " +
     #       f"in genome {args.genome.name}")
     
-    tree = getSuffixTree("mississippi")
+    string = "mississippi"
+    tree = getSuffixTree(string)
+    for match in search.search(tree,'is',string):
+        print(match)
     #preorder("banana$", tree)
 
 
