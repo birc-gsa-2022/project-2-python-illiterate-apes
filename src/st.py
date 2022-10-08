@@ -124,9 +124,10 @@ def main():
     # print(f"Find every reads in {args.reads.name} " +
     #       f"in genome {args.genome.name}")
     
-    string = "mississippi"
+    string = "testesteazstsexcstestestest"
     tree = getSuffixTree(string)
-    for match in search.search(tree,'is',string):
+    string = memoryview(string.encode())
+    for match in search.search(tree,'stes',string ):
         print(match)
     #preorder("banana$", tree)
 

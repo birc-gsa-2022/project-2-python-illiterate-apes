@@ -1,12 +1,13 @@
 from collections import deque
 import st
+from typing import Union
 
-def LCP(a: str, b: str) -> int:
+def LCP(a: Union[str, memoryview], b: Union[str, memoryview]) -> int:
     """
     Finds the longest common prefix of a and b
     
     returns: 
-    If there is no prefix returns 0 otherwise returns length of prefix
+    returns length of prefix
     """
     i = 0
     while(i < len(a) and i < len(b)):
@@ -15,14 +16,14 @@ def LCP(a: str, b: str) -> int:
         i+=1
     return i
 
-def search(root: st.Node, pattern: str, string: str):
+def search(root: st.Node, pattern: Union[str, memoryview], string: Union[str, memoryview]):
     """
     Looks for a pattern in a string using a suffix tree of string.
     """
     #Avoid copies while slicing with memoryviews
 
-    patternView = memoryview(pattern.encode())
-    stringView = memoryview(string.encode())
+    patternView = pattern if type(pattern) == memoryview else memoryview(pattern.encode())
+    stringView = string if type(string) == memoryview else memoryview(string.encode())
 
     currNode = root.child
     
