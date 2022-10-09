@@ -41,6 +41,9 @@ def search(root: st.Node, pattern: Union[str, memoryview], string: Union[str, me
             queue.appendleft(currNode.child)
             while(queue):
                 currNode = queue.pop()
+                if(type(currNode) == int):
+                    yield currNode
+                    continue
                 if type(currNode.child) == int:
                     #is leaf, so yield index
                     yield currNode.child

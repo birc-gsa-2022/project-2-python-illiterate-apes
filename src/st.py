@@ -92,7 +92,7 @@ def getSuffixTree(x: str):
                 i += match.end-match.start
                 n = match
     
-    preorder(x, root)
+    #preorder(x, root)
     return root
 
 def preorder_r(x: str, n: Node, depth: int):
@@ -124,10 +124,10 @@ def main():
     # print(f"Find every reads in {args.reads.name} " +
     #       f"in genome {args.genome.name}")
     
-    string = "testesteazstsexcstestestest"
+    string = "aabanana"
     tree = getSuffixTree(string)
     string = memoryview(string.encode())
-    for match in search.search(tree,'stes',string ):
+    for match in search.search(tree,'a',string ):
         print(match)
     #preorder("banana$", tree)
 
