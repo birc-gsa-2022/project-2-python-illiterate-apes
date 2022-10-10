@@ -18,19 +18,12 @@ class Node:
     def __len__(self):
         return self.end-self.start
 
-SENTINEL = "$"
-
-def getAllSuffixes(x):
-    for i in range(1, len(x)):
-        yield x[i:]+SENTINEL
-    yield SENTINEL
-
-def getMatch(x: str, y: str, n: Node, i: int):
+def getMatch(x: str, n: Node, i: int):
     nchild = n.child
     while type(nchild) is Node:
-        if x[nchild.start] == y[i]:
+        if x[nchild.start] == x[i]:
             iters = 1
-            while nchild.start + iters < nchild.end and x[nchild.start+iters] == y[i+iters]:
+            while nchild.start + iters < nchild.end and x[nchild.start+iters] == x[i+iters]:
                 iters += 1
             return iters, nchild
         else:
@@ -45,33 +38,29 @@ def getDifference(str1, str2, i, j, length):
         counter += 1
     return -1
 
+SENTINEL = "$"
 def getSuffixTree(x: str):
-    suffixes = getAllSuffixes(x)
     x += SENTINEL
-
-    painList = []
 
     # Create the root and the first leaf
     firstLeaf = Node(0, len(x), 1, None)
     root = Node(0, 0, firstLeaf, None)
 
-    for index, suf in enumerate(suffixes):
-        #print(suf)
-        index += 1     
+    for startSuffix in range(1, len(x)):
         i = 0
         n = root
         
         while type(n) is Node:
-            dif, match = getMatch(x, suf, n, i)
+            dif, match = getMatch(x, n, i+startSuffix)
             if dif < 0:
                 # Finishes at the node
-                newNode = Node(index+i, len(x), index+1, n.child)
+                newNode = Node(startSuffix+i, len(x), startSuffix+1, n.child)
                 n.child = newNode
                 break
             elif dif<len(match):
                 # Finishes at the edge
                 middleNode = Node(match.start, match.start+dif, None, match.sib)
-                newNode = Node(index+i+dif, len(x), index+1, match)
+                newNode = Node(startSuffix+i+dif, len(x), startSuffix+1, match)
 
                 middleNode.child = newNode
 
