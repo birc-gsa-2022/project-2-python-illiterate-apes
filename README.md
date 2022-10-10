@@ -15,9 +15,15 @@ Implement the tool `st` that does exact pattern matching using a suffix tree. Te
 
 ## Specify if you have used a linear time or quadratic time algorithm.
 
+The algorithm used for the tree construction is the quadratic time (naïve) algorithm, where each suffix is being introduced indepently from the other, going down the previous nodes (if possible) and building the nodes iteratively.
+
 ## Insights you may have had while implementing and comparing the algorithms.
 
+The implementation of the tree construction algorithm has been pretty straight-forward, but the difference in performance with McCreight's algorithm is very noticeable.
+
 ## Problems encountered if any.
+
+In the case of the tree construction algorithm we have had some problems with the pointer adjustment when inserting new nodes on the suffix tree, since you have to be especially careful when doing it.
 
 ## Correctness
 
