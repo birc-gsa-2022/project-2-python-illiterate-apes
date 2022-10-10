@@ -2,6 +2,8 @@ from __future__ import annotations
 import argparse
 from dataclasses import dataclass
 import search
+import fasta
+import fastq
 
 @dataclass
 class Node:
@@ -54,7 +56,7 @@ def getSuffixTree(x: str):
     root = Node(0, 0, firstLeaf, None)
 
     for index, suf in enumerate(suffixes):
-        print(suf)
+        #print(suf)
         index += 1     
         i = 0
         n = root
@@ -116,20 +118,28 @@ def preorder(x: str, n: Node):
     preorder_r(x, n, 0)
 
 def main():
-    # argparser = argparse.ArgumentParser(
-    #     description="Exact matching using a suffix tree")
-    # argparser.add_argument("genome", type=argparse.FileType('r'))
-    # argparser.add_argument("reads", type=argparse.FileType('r'))
-    # args = argparser.parse_args()
-    # print(f"Find every reads in {args.reads.name} " +
-    #       f"in genome {args.genome.name}")
-    
-    string = "aabanana"
-    tree = getSuffixTree(string)
-    string = memoryview(string.encode())
-    for match in search.search(tree,'a',string ):
-        print(match)
-    #preorder("banana$", tree)
+    argparser = argparse.ArgumentParser(
+        description="Exact matching using a suffix tree")
+    argparser.add_argument("genome", type=argparse.FileType('r'))
+    argparser.add_argument("reads", type=argparse.FileType('r'))
+    args = argparser.parse_args()
+    genomes = fasta.fasta_parse(args.genome)
+    reads = fastq.fastq_parser(args.reads)
+
+    out = []
+
+    for g in genomes:
+        tree = getSuffixTree(g[1])
+        string = memoryview(g[1].encode())
+        for r in reads:
+            length = len(r[1])
+            if length == 0:
+                continue
+            for m in search.search(tree, r[1], string):
+                out.append((int(r[0][4:]), int(g[0][3:]), m, length, r[1]))
+
+    for t in sorted(out, key=lambda x: (x[0], x[1], x[2])):
+        print(f"read{t[0]}\tchr{t[1]}\t{t[2]}\t{t[3]}M\t{t[4]}")
 
 
 if __name__ == '__main__':

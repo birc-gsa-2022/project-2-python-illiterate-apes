@@ -62,5 +62,4 @@ def search(root: st.Node, pattern: Union[str, memoryview], string: Union[str, me
             if currNode.sib:
                 currNode = currNode.sib
             else:
-                yield -1
                 return
