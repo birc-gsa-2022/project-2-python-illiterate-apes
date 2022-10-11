@@ -4,6 +4,7 @@ from dataclasses import dataclass
 import search
 import fasta
 import fastq
+import re
 
 @dataclass
 class Node:
@@ -106,6 +107,10 @@ def preorder(x: str, n: Node):
     print("Tree representation:")
     preorder_r(x, n, 0)
 
+def getTrailingNumber(s):
+    m = re.search(r'\d+$', s)
+    return (s[:m.start()], int(s[m.start():]))
+
 def main():
     argparser = argparse.ArgumentParser(
         description="Exact matching using a suffix tree")
@@ -125,10 +130,10 @@ def main():
             if length == 0:
                 continue
             for m in search.search(tree, r[1], string):
-                out.append((int(r[0][4:]), int(g[0][3:]), m, length, r[1]))
+                out.append((getTrailingNumber(r[0]), getTrailingNumber(g[0]), m, length, r[1]))
 
     for t in sorted(out, key=lambda x: (x[0], x[1], x[2])):
-        print(f"read{t[0]}\tchr{t[1]}\t{t[2]}\t{t[3]}M\t{t[4]}")
+        print(f"{t[0][0]}{t[0][1]}\t{t[1][0]}{t[1][1]}\t{t[2]}\t{t[3]}M\t{t[4]}")
 
 
 if __name__ == '__main__':
