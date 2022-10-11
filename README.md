@@ -31,7 +31,21 @@ In the case of the tree construction algorithm we have had some problems with th
 
 ## Running time
 
-*Describe experiments that verifies that your implementation of `st` uses no more time than O(n) or O(n²) (depending on the algorithm) for constructing the suffix tree and no more than O(m) for searching for a given read in it. Remember to explain your choice of test data. What are “best” and “worst” case inputs?*
+### Naive Construction Algorithm
+The worst case inputs would be strings which suffixes are prefixes of any bigger suffix (the very worst case is a string of only the same character e.g. "aaaaaaaaa"), as this means the algorithm will need to search and compare each individual character of each suffix and when it creates a new node it will already have compared all characters of the suffix. This means the worst case is O(n^2) because it has to compare each character in each suffix to another character (except for the suffix that is the whole string).
 
-*If you have graphs that show the running time--you probably should have--you can embed them here like we did in the previous project.*
+The best case input would be a string with no repeating characters, as this would mean it only has to compare the first character of the suffix to the first character of each child of the root before inserting the suffix in a new child of the root. This means it is O(a*n) for best case, where a is the size of the alphabet and n is the size of the string.
+
+To prove our implementation takes at most O(n^2) we benchmarked the runtime of the construction of suffix trees of strings of varying length consisting of only the same character as this is the worst case input. 
+![](./figs/construction.jpg)
+Looking at the figure, the quadratic shape is apparent.
+
+### Search algorithm
+The worst case input for search is the largest possible search pattern with most possible number of occurrences, e.g. a string of only one character and a pattern of only the same character. This is because the search will compare each character in the pattern against another single character in the suffix tree O(m), and then will have to traverse the tree to report each occurrence (z). As a result it is O(m+z) in the worst case.
+
+The best case would be the shortest possible pattern with no occurrences, e.g. a pattern which only one character that does not appear in the suffix tree.
+
+To prove our implementation takes at most O(m+z) we benchmarked the runtime of the search with patterns of varying length and strings of varying length(so to also increase number of occurrences) both consisting of only the same character as this is the worst case input. 
+![](./figs/search.jpg)
+Looking at the figure, the linear shape is apparent.
 
