@@ -52,8 +52,10 @@ The worst case inputs would be strings which suffixes are prefixes of any bigger
 
 The best case input would be a string with no repeating characters, as this would mean it only has to compare the first character of the suffix to the first character of each child of the root before inserting the suffix in a new child of the root. This means it is O(a*n) for best case, where a is the size of the alphabet and n is the size of the string.
 
-To prove our implementation takes at most O(n^2) we benchmarked the runtime of the construction of suffix trees of strings of varying length consisting of only the same character as this is the worst case input. 
+To prove our implementation takes at most O(n^2) we benchmarked the runtime of the construction of suffix trees of strings of varying length consisting of only the same character as this is the worst case input.
+
 ![](./figs/construction.jpg)
+
 Looking at the figure, the quadratic shape is apparent.
 
 ### Search algorithm
@@ -61,7 +63,9 @@ The worst case input for search is the largest possible search pattern with most
 
 The best case would be the shortest possible pattern with no occurrences, e.g. a pattern which only one character that does not appear in the suffix tree.
 
-To prove our implementation takes at most O(m+z) we benchmarked the runtime of the search with patterns of varying length and strings of varying length(so to also increase number of occurrences) both consisting of only the same character as this is the worst case input. 
+To prove our implementation takes at most O(m+z) we benchmarked the runtime of the search with patterns of varying length and strings of varying length(so to also increase number of occurrences) both consisting of only the same character as this is the worst case input.
+
 ![](./figs/search.jpg)
+
 Looking at the figure, the linear shape is apparent.
 
