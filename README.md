@@ -27,7 +27,23 @@ In the case of the tree construction algorithm we have had some problems with th
 
 ## Correctness
 
-*Describe experiments that verifies the correctness of your implementations.*
+The correctness has been verified using the very same tests used in the previous project, which were the following:
+
+- Short patterns and genomes (chains), with length going from 0 to 10 characters (selected randomly)
+- Random chains
+- Random chains, having a chance of repeating the previous character.
+- Random chains, having a chance of having a long sequence made up by a single character.
+- Random chains, where a character cannot appear consecutively two or more times.
+- Fibonacci chains, made up by two different characters being concatenated following a Fibonacci distribution.
+
+All of these genomes (except the short ones) have a length between 2,000 and 10,000 characters, whilst the patters length varies between 3 and 200. Moreover, for each pair of chains the genome is adapted, forcing to include the pattern a random number of times between 0 and 10 (if the randomness have made up more). The inclusion of this patterns has a high probability of having four extreme situations:
+
+- Pattern matching at the beginning of the genome.
+- Pattern matching at the end of the genoms.
+- Two pattern matchings next to each other.
+- Two pattern matchings overlapping one with each other.
+
+Moreover, since we had a working implementation of the exact pattern searching from the previous project, we have used them to double-check when finding errors while testing.
 
 ## Running time
 
